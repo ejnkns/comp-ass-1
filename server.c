@@ -13,6 +13,12 @@ The port number is passed as an argument
 #include <netinet/in.h>
 #include <unistd.h>
 
+#include <stdbool.h>
+
+/********************************/
+void interpret_request(char* buffer);
+bool sub_str_cmp(int i, int j, char* sub_str, char* str);
+/********************************/
 
 int main(int argc, char **argv)
 {
@@ -86,14 +92,16 @@ int main(int argc, char **argv)
 	
 	n = read(newsockfd,buffer,255);
 
+
 	if (n < 0) 
 	{
 		perror("ERROR reading from socket");
 		exit(1);
 	}
 	
-	printf("Here is the message: %s\n",buffer);
-
+	////
+	interpret_request(buffer);
+	////
 	n = write(newsockfd,"I got your message",18);
 	
 	if (n < 0) 
@@ -107,4 +115,30 @@ int main(int argc, char **argv)
 	close(sockfd);
 	
 	return 0; 
+}
+
+
+void interpret_request(char *buffer) {
+	char get_str[] = "GET";
+	char http_str[] = "HTTP";
+	char http_version1_str[] = "1.0";
+
+	if (sub_str_cmp(0, strlen(get_str), get_str, buffer)) {
+		printf("did the sub_str_comp, GET true\n");
+	}
+}
+
+
+bool sub_str_cmp(int i, int j, char* sub_str, char* str) {
+	printf("sub_str is : %s\n", sub_str);
+	printf("str is : %s\n", str);
+	if (strlen(sub_str) > strlen(str)) {
+		return false;
+	}
+	for(; i < j; i++) {
+		if (sub_str[i] != str[i]) {
+			return false;
+		}
+	}
+	return true;
 }

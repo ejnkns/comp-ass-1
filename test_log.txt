@@ -1,0 +1,8 @@
+Here is the message: GET /index.html HTTP/1.1
+User-Agent: Wget/1.17.1 (linux-gnu)
+Accept: */*
+Accept-Encoding: identity
+Host: 127.0.0.1:7912
+Connection: Keep-Alive
+
+
